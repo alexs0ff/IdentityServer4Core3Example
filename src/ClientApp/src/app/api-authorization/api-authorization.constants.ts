@@ -1,4 +1,4 @@
-export const ApplicationName = 'Company.WebApplication1';
+export const ApplicationName = 'TestIdentityAngular';
 
 export const ReturnUrlType = 'returnUrl';
 

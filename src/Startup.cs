@@ -44,6 +44,8 @@ namespace IdentityServer4WebApp
                 configuration.RootPath = "ClientApp/dist";
             });
 
+            services.AddControllers();
+
             services.AddRazorPages();
         }
 
@@ -74,6 +76,7 @@ namespace IdentityServer4WebApp
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();
+                endpoints.MapControllers();
             });
 
             app.UseSpa(spa =>
