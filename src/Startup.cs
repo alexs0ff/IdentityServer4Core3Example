@@ -35,7 +35,12 @@ namespace IdentityServer4WebApp
             services.AddDefaultIdentity<ApplicationUser>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddIdentityServer()
-                .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
+                .AddApiAuthorization<ApplicationUser, ApplicationDbContext>(options =>
+                    {
+                        var apiResource = options.ApiResources.First();
+                        apiResource.UserClaims = new[] { "hasUsersGroup" };
+                    }
+                );
 
             services.AddAuthentication()
                 .AddOpenIdConnect("Google", "Google",
