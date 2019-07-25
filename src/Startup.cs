@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using IdentityServer4WebApp.Data;
+using IdentityServer4WebApp.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -28,6 +29,9 @@ namespace IdentityServer4WebApp
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlite(
                     Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDefaultIdentity<ApplicationUser>()
+                .AddEntityFrameworkStores<ApplicationDbContext>();
+
 
             services.AddRazorPages();
         }
@@ -51,6 +55,7 @@ namespace IdentityServer4WebApp
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
