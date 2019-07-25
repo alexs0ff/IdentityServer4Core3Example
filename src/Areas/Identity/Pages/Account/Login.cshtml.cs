@@ -9,20 +9,24 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Server.IISIntegration;
 using Microsoft.Extensions.Logging;
 
 namespace IdentityServer4WebApp.Areas.Identity.Pages.Account
 {
-    [AllowAnonymous]
+    [Authorize(AuthenticationSchemes = "Windows")]
     public class LoginModel : PageModel
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
 
-        public LoginModel(SignInManager<ApplicationUser> signInManager, ILogger<LoginModel> logger)
+        private readonly IAuthenticationSchemeProvider _schemeProvider;
+
+        public LoginModel(SignInManager<ApplicationUser> signInManager, ILogger<LoginModel> logger, IAuthenticationSchemeProvider schemeProvider)
         {
             _signInManager = signInManager;
             _logger = logger;
+            _schemeProvider = schemeProvider;
         }
 
         [BindProperty]
@@ -61,7 +65,7 @@ namespace IdentityServer4WebApp.Areas.Identity.Pages.Account
             // Clear the existing external cookie to ensure a clean login process
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
-            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            ExternalLogins = (await _schemeProvider.GetAllSchemesAsync()).Where(x => x.DisplayName != null || (x.Name.Equals(IISDefaults.AuthenticationScheme, StringComparison.OrdinalIgnoreCase))).ToList();
 
             ReturnUrl = returnUrl;
         }
