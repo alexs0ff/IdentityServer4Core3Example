@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using IdentityServer4.Models;
 using IdentityServer4WebApp.Data;
 using IdentityServer4WebApp.Models;
+using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -35,7 +37,21 @@ namespace IdentityServer4WebApp
             services.AddDefaultIdentity<ApplicationUser>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddIdentityServer()
-                .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
+                .AddApiAuthorization<ApplicationUser, ApplicationDbContext>(options =>
+                    {
+                        var apiResource = options.ApiResources.First();
+                        apiResource.UserClaims = new[] { "hasUsersGroup" };
+
+                        var identityResource = new IdentityResource
+                        {
+                            Name = "customprofile",
+                            DisplayName = "Custom profile",
+                            UserClaims = new[] { "hasUsersGroup" },
+                        };
+                        identityResource.Properties.Add(ApplicationProfilesPropertyNames.Clients, "*");
+                        options.IdentityResources.Add(identityResource);
+                    }
+                );
 
             services.AddAuthentication()
                 .AddOpenIdConnect("Google", "Google",
@@ -59,6 +75,12 @@ namespace IdentityServer4WebApp
             services.AddControllers();
 
             services.AddRazorPages();
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("ShouldHasUsersGroup", policy => { policy.RequireClaim("hasUsersGroup"); });
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -28,5 +28,13 @@ namespace IdentityServer4WebApp.Controller
                 })
                 .ToArray();
         }
+
+        [Authorize(Policy = "ShouldHasUsersGroup")]
+        [HttpGet("api/internalrates")]
+        public IEnumerable<ExchangeRateItem> GetInternalRates()
+        {
+            return Get().Select(i => { i.Value = Math.Round(i.Value - 0.02, 2); return i; });
+        }
+
     }
 }
