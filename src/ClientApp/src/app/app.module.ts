@@ -7,12 +7,14 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { DataComponent } from './data/data.component';
 import { ApiAuthorizationModule } from "./api-authorization/api-authorization.module";
+import { ExchangeRateComponent } from './exchange-rate/exchange-rate.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    DataComponent
+    DataComponent,
+    ExchangeRateComponent
   ],
   imports: [
     BrowserModule,

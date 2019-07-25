@@ -3,9 +3,7 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'app-data',
   template: `
-    <p>
-      data works!
-    </p>
+<app-exchange-rate apiUrl="rates"></app-exchange-rate>
   `,
   styles: []
 })
