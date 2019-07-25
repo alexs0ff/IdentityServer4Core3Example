@@ -1,0 +1,26 @@
+<header>
+  <nav class='navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3'>
+    <div class="container">
+      <a class="navbar-brand" [routerLink]='["/"]'>Client App</a>
+      <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse" [ngClass]='{"show": isExpanded}'>
+        <ul class="navbar-nav flex-grow">
+          <li class="nav-item" [routerLinkActive]='["link-active"]' [routerLinkActiveOptions]='{ exact: true }'>
+            <a class="nav-link text-dark" [routerLink]='["/"]'>Home</a>
+          </li>
+          <li class="nav-item" [routerLinkActive]='["link-active"]'>
+            <a class="nav-link text-dark" [routerLink]='["/data"]'>Web api data</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <app-login-menu></app-login-menu>
+  </nav>
+</header>
+<div style="text-align:center">
+  <h1>
+    Welcome to {{ title }}!
+  </h1>
+</div>
+<div class="router-outlet">
+  <router-outlet></router-outlet>
+</div>
